@@ -23,4 +23,32 @@ Return a value getted from key from selected hashmap, or a `NO_KEY_DEFINED` cons
 Preparing to iterate through hashmaps by keys sequentially. Return a first key of hashmap. 
 ### GiveKey$()
 #### Parameters: none
+Return the next key of hashmap of `NO_KEY_DEFINED` constant value if all keys was listed.
 
+Example:
+
+```
+Function CloneHashmap%(original%)
+	clone% = CreateHashmap()
+	
+	CurrentKey$ = EachHashmap(original%)
+	
+	While Not CurrentKey$ = NO_KEY_DEFINED
+		WriteKey(clone%, CurrentKey$, ReadKey(original%, CurrentKey$))
+		CurrentKey$ = GiveKey()
+	Wend
+	
+	Return clone%
+End Function 
+```
+
+### CloneHashmap(original)
+#### Parameters: 
+##### original - a handle of a original hashmap than will be cloned
+Return a new identical (by key => value relation) hashmap.
+
+### ExtendHashmap(original, extendedBy)
+#### Parameters: 
+##### original - a handle of a extendable hashmap 
+##### extendedBy - a handle of a exteded by hashmap
+Copies non-duplicate keys (and their values) from extendedBy to original.
