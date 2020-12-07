@@ -1,3 +1,5 @@
+Include "xmlSerialize.bb"
+
 Const hashmap_size = 120
 
 Const NO_KEY_DEFINED$ = "KEY IS NOT DEFINED"
@@ -188,7 +190,7 @@ End Function
 
 Function CloneHashmap%(original%)
 	CurrentKey$ = EachHashmap(original%)
-	
+
 	clone% = CreateHashmap()
 	
 	While Not CurrentKey$ = NO_KEY_DEFINED
