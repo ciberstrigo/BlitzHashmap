@@ -214,6 +214,15 @@ Function ExtendHashmap(original%, extendedBy%)
 	Return clone%
 End Function 
 
+Function IsHashmap(hashmap%)
+	this.hashmap = Object.hashmap(hashmap%)
+
+	If (Null = this)
+		Return False
+	EndIf
+
+	Return True
+End Function 
 
 
 
