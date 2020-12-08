@@ -1,5 +1,3 @@
-Include "BlitzXML.bb"
-
 Global CurrentXMLFilename$
 
 
@@ -9,8 +7,10 @@ Function SerializeHashmap(hashmap%, filename$)
     xmlSave(filename$, root)
 End Function 
 
+
 Function SerializeHashmapRecursive(parent%, rootName$ = "root", hashmap%)
-    CurrentKey$ = EachHashmap(hashmap%)
+    eached% = EachHashmap(hashmap%)
+    CurrentKey$ = GiveKey(eached%)
 	While Not CurrentKey$ = NO_KEY_DEFINED
 		CurrentValue$ = ReadKey(original%, CurrentKey$)
 
@@ -20,7 +20,7 @@ Function SerializeHashmapRecursive(parent%, rootName$ = "root", hashmap%)
             xmlNodeAttributeValueSet(parent, CurrentKey$, CurrentValue$)
         EndIf
 
-		CurrentKey$ = GiveKey()
+		CurrentKey$ = GiveKey(eached%)
 	Wend
 End Function
 
