@@ -122,9 +122,11 @@ Function DumpHashmap(hashmap%)
 End Function
 
 
-Global CurrentEachedHashmap%
-Global CurrentEachedIndex% = 0
-Global CurrentEachedElementIndex% = 0
+Type EachHashmap
+	Field CurrentEachedHashmap%
+	Field CurrentEachedIndex% = 0
+	Field CurrentEachedElementIndex% = 0
+End Type
 
 
 Function EachHashmap$(hashmap%)
@@ -136,39 +138,47 @@ Function EachHashmap$(hashmap%)
 		RuntimeError("Hashmap is not exist!") 
 	EndIf
 
-	CurrentEachedHashmap% = hashmap%
-	Return GiveKey$()
+	eached.EachHashmap = new EachHashmap
+	eached\CurrentEachedHashmap% = hashmap%
+	Return Handle(eached)
 End Function 
 
 
-Function GiveKey$()
-	this.hashmap = Object.hashmap(CurrentEachedHashmap%)
+Function GiveKey$(e%)
+	eached.EachHashmap = Object.EachHashmap(e%)
+
+	If Null = eached 
+		DebugLog("Eached hashmap was not set")
+		Stop()
+		RuntimeError("Eached hashmap was not set")
+	EndIf
+
+	this.hashmap = Object.hashmap(eached\CurrentEachedHashmap%)
 	
 	If Null = this
 		DebugLog("Eached hashmap was not set")
 		Stop()
 		RuntimeError("Eached hashmap was not set")
 	EndIf
-	
+
 	count_of_elements% = 0
 	
-	For i = CurrentEachedIndex% To hashmap_size
+	For i = eached\CurrentEachedIndex% To hashmap_size
 		element.hashmap_element = this\table.hashmap_element[i]
 		counter_index% = 0
 		
 		While True
 		
 			If Null = element
-				CurrentEachedElementIndex% = 0
+				eached\CurrentEachedElementIndex% = 0
 				Exit	
 			EndIf
 		
-			
 			counter_index% = counter_index% + 1
 
-			If (counter_index% > CurrentEachedElementIndex%) 
-				CurrentEachedElementIndex% = counter_index%
-				CurrentEachedIndex% = i
+			If (counter_index% > eached\CurrentEachedElementIndex%) 
+				eached\CurrentEachedElementIndex% = counter_index%
+				eached\CurrentEachedIndex% = i
 
 				Return element\key$
 			EndIf
@@ -178,65 +188,102 @@ Function GiveKey$()
 		Wend
 	Next
 	
-	CurrentEachedIndex% = 0
-	CurrentEachedElementIndex% = 0
-	CurrentEachedHashmap% = 0
+	eached\CurrentEachedIndex% = 0
+	eached\CurrentEachedElementIndex% = 0
+	eached\CurrentEachedHashmap% = 0
 	
+	Delete eached
+
 	Return NO_KEY_DEFINED
 End Function 
 
-
 Function CloneHashmap%(original%)
-	CurrentKey$ = EachHashmap(original%)
-	
+	hashmapEach% = EachHashmap(original%)
+	CurrentKey$ = GiveKey(hashmapEach%)
+
 	clone% = CreateHashmap()
 	
 	While Not CurrentKey$ = NO_KEY_DEFINED
 		WriteKey(clone%, CurrentKey$, ReadKey(original%, CurrentKey$))
-		CurrentKey$ = GiveKey()
+		CurrentKey$ = GiveKey(hashmapEach%)
 	Wend
 	
 	Return clone%
 End Function 
 
 Function ExtendHashmap(original%, extendedBy%)
-	CurrentKey$ = EachHashmap(extendedBy%)
+	hashmapEach% = EachHashmap(extendedBy%)
+	CurrentKey$ = GiveKey(hashmapEach%)
 	
 	While Not CurrentKey$ = NO_KEY_DEFINED
 		If (ReadKey(original%, CurrentKey$) = NO_KEY_DEFINED)
 			WriteKey(original%, CurrentKey$, ReadKey(extendedBy%, CurrentKey$))
 		EndIf
-		CurrentKey$ = GiveKey()
+		CurrentKey$ = GiveKey(hashmapEach%)
 	Wend
 	
-	Return clone%
+	;Return clone%
+End Function 
+
+Function IsHashmap(hashmap%)
+	this.hashmap = Object.hashmap(hashmap%)
+	If (Null = this)
+		Return False
+	EndIf
+
+	Return True
+End Function
+
+
+Function DeleteKey(hashmap%, key$)
+	this.hashmap = Object.hashmap(hashmap%)
+
+	If (Null = this) 
+		DebugLog("Hashmap is not exist!")
+		Stop()
+		RuntimeError("Hashmap is not exist!") 
+	EndIf
+
+	index% = str_to_num%(key$)
+	element.hashmap_element = this\table[index%]
+	While True
+		If Null = element
+			Return NO_KEY_DEFINED$
+			Exit
+		EndIf
+		If element\key$ = key$
+			Delete element
+			Exit
+		EndIf 
+		element.hashmap_element = element.hashmap_element\following.hashmap_element
+	Wend
+
+	Return NO_KEY_DEFINED$
 End Function 
 
 
+Function DeleteHashmap(hashmap%)
+	this.hashmap = Object.hashmap(hashmap%)
 
+	If (Null = this) 
+		DebugLog("Hashmap is not exist!")
+		Stop()
+		RuntimeError("Hashmap is not exist!") 
+	EndIf
 
+	index% = str_to_num%(key$)
+	element.hashmap_element = this\table[index%]
+	
+	While True
+		If Null = element
+			Exit
+		EndIf
+		If element\key$ = key$
+			Delete element
+			Exit
+		EndIf 
+		element.hashmap_element = element.hashmap_element\following.hashmap_element
+	Wend
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	Delete this
+End Function
