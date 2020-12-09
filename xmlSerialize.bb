@@ -1,6 +1,3 @@
-Global CurrentXMLFilename$
-
-
 Function SerializeHashmap(hashmap%, filename$)
     node = SerializeHashmapRecursive(hashmap%)
     xmlSave(filename$, node)
