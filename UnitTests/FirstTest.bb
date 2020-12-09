@@ -1,4 +1,6 @@
+Include "../xmlSerialize.bb"
 Include "../hashmap.bb"
+Include "../BlitzXML.bb"
 
 Function AssertHashmapCreatable()
     hashmap = CreateHashmap()
