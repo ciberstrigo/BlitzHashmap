@@ -1,0 +1,9 @@
+<config>
+    <graphics width="1200" height="600" depth="32" mode="2" vsync="1"/>
+    <controls>
+        <forward key="w" />
+        <backward key="s" />
+        <strafe_left key="a" />
+        <strafe_right key="d" />
+    </controls>
+</config>

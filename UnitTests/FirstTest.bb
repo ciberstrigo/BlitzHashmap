@@ -3,7 +3,7 @@ Include "../hashmap.bb"
 Include "../BlitzXML.bb"
 
 Function AssertHashmapCreatable()
-    hashmap = CreateHashmap()
+    hashmap$ = CreateHashmap()
 
     If IsHashmap(hashmap)
         Return True
@@ -19,7 +19,7 @@ Function AssertHashmapWriteAndRead()
     LASTNAME_KEY = "Lastname"
     LASTNAME_VALUE = "Averyanov"
 
-    hashmap = CreateHashmap()
+    hashmap$ = CreateHashmap()
     WriteKey(hashmap, FIRSTNAME_KEY, FIRSTNAME_VALUE)
     WriteKey(hashmap, LASTNAME_KEY, LASTNAME_VALUE)
 
@@ -40,11 +40,11 @@ Function AssertHashmapClone()
     LASTNAME_KEY = "Lastname"
     LASTNAME_VALUE = "Averyanov"
 
-    hashmap = CreateHashmap()
+    hashmap$ = CreateHashmap()
     WriteKey(hashmap, FIRSTNAME_KEY, FIRSTNAME_VALUE)
     WriteKey(hashmap, LASTNAME_KEY, LASTNAME_VALUE)
 
-    clonedHashmap = CloneHashmap(hashmap)
+    clonedHashmap$ = CloneHashmap(hashmap)
 
     READED_FIRSTNAME_VALUE = ReadKey(clonedHashmap, FIRSTNAME_KEY)
     READED_LASTNAME_VALUE = ReadKey(clonedHashmap, LASTNAME_KEY)
@@ -63,7 +63,7 @@ Function AssertHashmapExtends()
     ORIGINAL_LASTNAME_KEY = "Lastname"
     ORIGINAL_LASTNAME_VALUE = "Averyanov"
 
-    original = CreateHashmap()
+    original$ = CreateHashmap()
     WriteKey(original, ORIGINAL_FIRSTNAME_KEY, ORIGINAL_FIRSTNAME_VALUE)
     WriteKey(original, ORIGINAL_LASTNAME_KEY, ORIGINAL_LASTNAME_VALUE)
 
@@ -74,7 +74,7 @@ Function AssertHashmapExtends()
     EXTENDEDBY_WORK_KEY = "Work"
     EXTENDEDBY_WORK_VALUE = "Reforma IT"
 
-    extendedBy = CreateHashmap()
+    extendedBy$ = CreateHashmap()
     WriteKey(extendedBy, EXTENDEDBY_EDUCATION_KEY, EXTENDEDBY_EDUCATION_VALUE)
     WriteKey(extendedBy, EXTENDEDBY_WORK_KEY, EXTENDEDBY_WORK_VALUE)
     
@@ -106,7 +106,7 @@ Function AssertDeleteKey()
     LASTNAME_KEY = "Lastname"
     LASTNAME_VALUE = "Averyanov"
 
-    hashmap = CreateHashmap()
+    hashmap$ = CreateHashmap()
     WriteKey(hashmap, FIRSTNAME_KEY, FIRSTNAME_VALUE)
     WriteKey(hashmap, LASTNAME_KEY, LASTNAME_VALUE)
 
@@ -126,17 +126,17 @@ Function AssertDeleteHashmap()
     LASTNAME_KEY = "Lastname"
     LASTNAME_VALUE = "Averyanov"
 
-    hashmap = CreateHashmap()
+    hashmap$ = CreateHashmap()
     WriteKey(hashmap, FIRSTNAME_KEY, FIRSTNAME_VALUE)
     WriteKey(hashmap, LASTNAME_KEY, LASTNAME_VALUE)
 
     DeleteHashmap(hashmap)
 
-    Return Not (IsHashmap(hashmap%))
+    Return Not (IsHashmap(hashmap))
 End Function
 
 Function AssertEachingHashmapStartingFromOne()
-    hashmap = CreateHashmap()
+    hashmap$ = CreateHashmap()
     WriteKey(hashmap, 0, "surrrender")
     WriteKey(hashmap, 1, "is")
     WriteKey(hashmap, 9, "not")
@@ -144,7 +144,7 @@ Function AssertEachingHashmapStartingFromOne()
     WriteKey(hashmap, 8, "options")
     WriteKey(hashmap, 3, "!!!")
 
-    eaching% = EachHashmap$(hashmap%)
+    eaching% = EachHashmap$(hashmap$)
     CurrentKey$ = GiveKey(eaching%)
     counter% = 1
 

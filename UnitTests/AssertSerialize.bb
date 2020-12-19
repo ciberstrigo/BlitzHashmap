@@ -5,43 +5,43 @@ Include "../BlitzXML.bb"
 
 Function AssertSerializeAndDeserialize()
     ; Serialization part
-    hashmap = CreateHashmap()
-    WriteKey(hashmap, "Firstname", "Leonid")
-    WriteKey(hashmap, "Lastname", "Averianov")
+    hashmap$ = CreateHashmap()
+    WriteKey(hashmap$, "Firstname", "Leonid")
+    WriteKey(hashmap$, "Lastname", "Averianov")
 
-    birthday = CreateHashmap()
-    WriteKey(birthday, "Year", "1996")
-    WriteKey(birthday, "Month", "January")
-    WriteKey(birthday, "Day", "03")
+    birthday$ = CreateHashmap()
+    WriteKey(birthday$, "Year", "1996")
+    WriteKey(birthday$, "Month", "January")
+    WriteKey(birthday$, "Day", "03")
 
-    WriteKey(hashmap, "Birthday", birthday)
+    WriteKey(hashmap$, "Birthday", birthday$)
 
-    SerializeHashmap(hashmap, "AssertSerialise.xml")
+    SerializeHashmap(hashmap$, "AssertSerialise.xml")
 
     ; Deserialization part
-    deserializedHashmap = DeserializeHashmap("AssertSerialise.xml")
+    deserializedHashmap$ = DeserializeHashmap("AssertSerialise.xml")
     
     DeleteFile("AssertSerialise.xml")
     
-    If Not(ReadKey(deserializedHashmap, "Firstname") = "Leonid")     
+    If Not(ReadKey(deserializedHashmap$, "Firstname") = "Leonid")     
         Return False 
     EndIf
     
-    If Not(ReadKey(deserializedHashmap, "Lastname") = "Averianov")     
+    If Not(ReadKey(deserializedHashmap$, "Lastname") = "Averianov")     
         Return False 
     EndIf
     
-    deserializedHashmapChild = Int(ReadKey(deserializedHashmap, "Birthday"))
+    deserializedHashmapChild$ = Int(ReadKey(deserializedHashmap$, "Birthday"))
     
-    If Not(ReadKey(deserializedHashmapChild, "Year") = "1996")     
+    If Not(ReadKey(deserializedHashmapChild$, "Year") = "1996")     
         Return False 
     EndIf
     
-    If Not(ReadKey(deserializedHashmapChild, "Month") = "January")     
+    If Not(ReadKey(deserializedHashmapChild$, "Month") = "January")     
         Return False 
     EndIf
     
-    If Not(ReadKey(deserializedHashmapChild, "Day") = "03")     
+    If Not(ReadKey(deserializedHashmapChild$, "Day") = "03")     
         Return False 
     EndIf
     

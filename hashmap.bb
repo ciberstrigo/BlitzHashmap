@@ -26,13 +26,17 @@ Function str_to_num%(s$)
 	EndIf
 End Function
 
-Function CreateHashmap()
-	Return Handle(New hashmap)
+Function CreateHashmap$()
+	Return Str(Handle(New hashmap)) + ":hashmap"
 End Function
 
 
-Function WriteKey(hashmap%, key$, value$)
-	this.hashmap = Object.hashmap(hashmap%)
+Function WriteKey(hashmap$, key$, value$)
+	If Not IsHashmap(hashmap$)
+		RuntimeError("Not a hashmap!") 
+	EndIf
+
+	this.hashmap = Object.hashmap(Int(hashmap$))
 
 	If (Null = this) 
 		DebugLog("Hashmap is not exist!")
@@ -43,6 +47,7 @@ Function WriteKey(hashmap%, key$, value$)
 	index% = str_to_num%(key$)
 	element.hashmap_element = this\table[index%]
 	previousElement.hashmap_element = Null
+
 	While True
 		If Null = element
 			element.hashmap_element = New hashmap_element
@@ -70,8 +75,12 @@ Function WriteKey(hashmap%, key$, value$)
 End Function
 
 
-Function ReadKey$(hashmap%, key$)
-	this.hashmap = Object.hashmap(hashmap%)
+Function ReadKey$(hashmap$, key$)
+	If Not IsHashmap(hashmap$)
+		RuntimeError("Not a hashmap!") 
+	EndIf
+
+	this.hashmap = Object.hashmap(Int(hashmap$))
 
 	If (Null = this) 
 		DebugLog("Hashmap is not exist!")
@@ -94,8 +103,12 @@ Function ReadKey$(hashmap%, key$)
 End Function
 
 
-Function DumpHashmap(hashmap%)
-	this.hashmap = Object.hashmap(hashmap%)
+Function DumpHashmap(hashmap$)
+	If Not IsHashmap(hashmap$)
+		RuntimeError("Not a hashmap!") 
+	EndIf
+
+	this.hashmap = Object.hashmap(Int(hashmap$))
 
 	If (Null = this) 
 		DebugLog("Hashmap is not exist!")
@@ -129,8 +142,12 @@ Type EachHashmap
 End Type
 
 
-Function EachHashmap$(hashmap%)
-	this.hashmap = Object.hashmap(hashmap%)
+Function EachHashmap$(hashmap$)
+	If Not IsHashmap(hashmap$)
+		RuntimeError("Not a hashmap!") 
+	EndIf
+
+	this.hashmap = Object.hashmap(Int(hashmap$))
 
 	If (Null = this) 
 		DebugLog("Hashmap is not exist!")
@@ -139,7 +156,8 @@ Function EachHashmap$(hashmap%)
 	EndIf
 
 	eached.EachHashmap = new EachHashmap
-	eached\CurrentEachedHashmap% = hashmap%
+	eached\CurrentEachedHashmap% = Int(hashmap$)
+
 	Return Handle(eached)
 End Function 
 
@@ -197,36 +215,38 @@ Function GiveKey$(e%)
 	Return NO_KEY_DEFINED
 End Function 
 
-Function CloneHashmap%(original%)
-	hashmapEach% = EachHashmap(original%)
+Function CloneHashmap$(original$)
+	hashmapEach% = EachHashmap(original$)
 	CurrentKey$ = GiveKey(hashmapEach%)
 
-	clone% = CreateHashmap()
+	clone$ = CreateHashmap()
 	
 	While Not CurrentKey$ = NO_KEY_DEFINED
-		WriteKey(clone%, CurrentKey$, ReadKey(original%, CurrentKey$))
+		WriteKey(clone$, CurrentKey$, ReadKey(original$, CurrentKey$))
 		CurrentKey$ = GiveKey(hashmapEach%)
 	Wend
 	
-	Return clone%
+	Return clone$
 End Function 
 
-Function ExtendHashmap(original%, extendedBy%)
-	hashmapEach% = EachHashmap(extendedBy%)
+Function ExtendHashmap(original$, extendedBy$)
+	hashmapEach% = EachHashmap(extendedBy$)
 	CurrentKey$ = GiveKey(hashmapEach%)
 	
 	While Not CurrentKey$ = NO_KEY_DEFINED
-		If (ReadKey(original%, CurrentKey$) = NO_KEY_DEFINED)
-			WriteKey(original%, CurrentKey$, ReadKey(extendedBy%, CurrentKey$))
+		If (ReadKey(original$, CurrentKey$) = NO_KEY_DEFINED)
+			WriteKey(original$, CurrentKey$, ReadKey(extendedBy$, CurrentKey$))
 		EndIf
 		CurrentKey$ = GiveKey(hashmapEach%)
 	Wend
-	
-	;Return clone%
 End Function 
 
-Function IsHashmap(hashmap%)
-	this.hashmap = Object.hashmap(hashmap%)
+Function IsHashmap(hashmap$)
+	If Not(InStr(hashmap$, ":hashmap"))
+		Return False
+	EndIf
+
+	this.hashmap = Object.hashmap(Int(hashmap$))
 	If (Null = this)
 		Return False
 	EndIf
@@ -235,8 +255,12 @@ Function IsHashmap(hashmap%)
 End Function
 
 
-Function DeleteKey(hashmap%, key$)
-	this.hashmap = Object.hashmap(hashmap%)
+Function DeleteKey(hashmap$, key$)
+	If Not(IsHashmap(hashmap$))
+		RuntimeError("Is not a hashmap!")
+	EndIf
+
+	this.hashmap = Object.hashmap(Int(hashmap$))
 
 	If (Null = this) 
 		DebugLog("Hashmap is not exist!")
@@ -262,8 +286,12 @@ Function DeleteKey(hashmap%, key$)
 End Function 
 
 
-Function DeleteHashmap(hashmap%)
-	this.hashmap = Object.hashmap(hashmap%)
+Function DeleteHashmap(hashmap$)
+	If Not(IsHashmap(hashmap$))
+		RuntimeError("Is not a hashmap!")
+	EndIf
+
+	this.hashmap = Object.hashmap(Int(hashmap$))
 
 	If (Null = this) 
 		DebugLog("Hashmap is not exist!")
